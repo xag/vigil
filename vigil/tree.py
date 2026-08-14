@@ -15,6 +15,8 @@ import os
 from pathlib import Path
 
 import quern.grounding  # noqa: F401 -- the grounding natives, for the ledger's own rules
+import vigil.natives  # noqa: F401 -- vigil@ is in the lock; consume re-runs its proof
+                      # on sync, and the gate needs the natives in-process
 from quern import Quern, Node
 from quern.library import consume
 from quern.provenance import Quantity
@@ -188,22 +190,26 @@ _ONE_LOOP = Node(
 _COPY_DEBT = Node(
     id="the-source-still-carries-the-copy",
     kind="debt",
-    name="The notebook this loop was lifted from still ships its own copy — the "
-         "duplication is extracted, not yet removed",
+    name="Discharged, kept as the record: the notebook this loop was lifted from "
+         "required vigil@ and deleted its copy",
     params={
-        # Ungrounded by construction: the count states what extraction left behind,
-        # and only the notebook's own migration can ground it at 1.
+        # Grounded by the discharge: the notebook's 1.1.0 requires vigil@0.1.0 and
+        # its loop modules became adapters importing this library; its suite passed
+        # unchanged against them — the check the debt was waiting for.
         "copies": Quantity(
-            value=2, unit="copy", provenance="asserted", grounded=False,
-            source="the loop exists here and in the notebook it was lifted from; "
-                   "nobody competent has yet verified the two still agree"),
+            value=1, unit="copy", provenance="measured", grounded=True,
+            source="invest@1.1.0 requires vigil@0.1.0 and the notebook's journal/"
+                   "daemon/scheduler/judge/feeds import vigil where their own loop "
+                   "code was; the notebook's 50-test suite passed unchanged against "
+                   "the adapters (2026-08-14)"),
     },
     payload={
         "note":
-            "Deliberate, not forgotten: digest pinning makes migration explicit and "
-            "unhurried, and a live app migrates on its own clock. Until it requires "
-            "vigil@ and deletes its copy, a fix to the loop lands in one place and "
-            "silently not the other.",
+            "The debt stood one day: extraction shipped with the source still "
+            "carrying its copy (deliberate — digest pinning makes migration explicit "
+            "and unhurried), and the source's next version removed it. Kept red-then-"
+            "green in the record rather than deleted, because the ledger's job is "
+            "what happened, not what reads well.",
     },
     children=[
         Node(id="the-notebook-requires-vigil", kind="discharge",
@@ -211,7 +217,8 @@ _COPY_DEBT = Node(
                  "condition":
                      "The notebook's next package version requires vigil@ and its "
                      "server imports this library where its own loop modules were. "
-                     "Whoever does that work grounds the count above at 1.",
+                     "Whoever does that work grounds the count above at 1. Met: "
+                     "invest@1.1.0, 2026-08-14.",
              }),
     ],
 )
