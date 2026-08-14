@@ -164,6 +164,12 @@ _ONE_LOOP = Node(
             "Bounded: a domain the shape cannot carry forks the loop, and the fork's "
             "diff IS the missing concept, named. The cost of being wrong is one "
             "honest fork, not a rewrite of adopters.",
+        "evidence":
+            "First adoption outside the notebook (2026-08-14): a surface critic "
+            "ran the loop unchanged over rendered-prose windows from surface-tape "
+            "walks of a real app — criteria as data, edge-firing, visible gaps, "
+            "pending queue, verdicts that propose. The falsification's cadence was "
+            "met and it did not fire.",
     },
     children=[
         Node(
