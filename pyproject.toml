@@ -1,0 +1,38 @@
+[project]
+name = "vigil"
+version = "0.1.0"
+description = "The watch-and-judge loop: criteria as data, deterministic watching at a cadence, firings queued for judgment, verdicts that propose and never act."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    # The substrate. A criterion is data on a quern node; its expr is lifted into a
+    # path-pinned rule and evaluated by the same machinery quern's own checks use.
+    "quern",
+    # The boundary. vigil declares its nondeterminism seam (the journal file) as a
+    # flight-recorder Boundary; a consumer that wants a tape of the loop records it.
+    "xag-flight-recorder",
+]
+
+[tool.uv.sources]
+# Pinned by rev, always: fork-or-republish over resolver algebra. A range would let the
+# meaning of the loop drift under whoever adopted it.
+quern = { git = "https://github.com/xag/quern", rev = "8aacb39" }
+xag-flight-recorder = { git = "https://github.com/xag/flight-recorder", rev = "1a5da2c" }
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["vigil"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

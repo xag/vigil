@@ -1,0 +1,19 @@
+{
+  "packages": [
+    {
+      "name": "ledger",
+      "version": "0.6.0",
+      "sha256": "fdf76a7a7c630f9c4848c61082f7c92e322f47c94b8f1dfdaa283b254bb5ae0f"
+    },
+    {
+      "name": "grounding",
+      "version": "1.2.0",
+      "sha256": "7a33466761cf675d4282830b973cc2a85a3ad11858f99398efba6c8580b42099"
+    },
+    {
+      "name": "vigil",
+      "version": "0.1.0",
+      "sha256": "752bf920b09bfa3f759d22477b56aee057ec759cb5701dc2d1cb49d7e2a24dde"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+__pycache__/
+.venv/
+*.egg-info/
+.pytest_cache/
+uv.lock
+
+# quern records its own CLI runs; the tapes are session records, not repo content.
+.quern/flight/
+
+# The synced quern package cache is COMMITTED, not ignored. quern.lock is the source of
+# truth - it names each package by digest - but the bytes it names travel with the lock
+# so CI never depends on a registry checkout being present or fresh.
