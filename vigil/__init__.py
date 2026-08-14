@@ -18,4 +18,4 @@ opt-in unattended judge), `contracts`/`natives` (the vigil/* solver contracts),
 module you need.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

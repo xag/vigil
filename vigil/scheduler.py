@@ -45,16 +45,25 @@ class Scheduler:
     journal: Journal
     feed: Feed
     notifier: Notifier
-    subjects: Iterable[str] = field(default_factory=list)
+    # A static list, or a zero-arg callable re-evaluated at every tick — the watched
+    # set is the domain's decision, and domains where it shifts (subjects activate and
+    # retire between ticks) select it live instead of freezing it at construction.
+    subjects: Iterable[str] | Callable[[], Iterable[str]] = field(default_factory=list)
     period: timedelta = timedelta(minutes=15)
     clock: Callable[[], datetime] = datetime.now
     sleep: Callable[[float], None] = time.sleep
 
+    def tick_once(self, now: datetime) -> TickReport:
+        """One tick, subjects resolved live. The subclass seam: a domain whose tick
+        wraps the generic one (selection, injected defaults) overrides exactly this,
+        and the watch loop around it — gap on failure, notify, sleep — stays here."""
+        subs = self.subjects() if callable(self.subjects) else list(self.subjects)
+        return tick(self.tree, self.journal, self.feed, now, subs)
+
     def run_once(self) -> TickReport:
         now = self.clock()
         try:
-            report = tick(self.tree, self.journal, self.feed, now,
-                          list(self.subjects))
+            report = self.tick_once(now)
         except Exception as e:  # a broken tick must not end the watch
             self.journal.append("gap", now, error=f"tick failed: {e}")
             report = TickReport(at=now, gaps=[f"tick failed: {e}"])

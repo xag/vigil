@@ -51,7 +51,16 @@ class Journal:
 
     There is deliberately no update or delete: the only mutation is `append`, and it
     assigns the next `seq` itself so callers cannot leave holes or overwrite.
+
+    Two subclass seams, because an append-only file outlives field names and a library
+    that cannot read a predecessor's files forces history rewrites: `event_class` is
+    the Event type constructed everywhere (a domain may extend it with its own
+    accessors), and `_decode` turns one stored dict into an Event (a domain whose old
+    journals named the owner field differently maps it here — the file is never
+    rewritten, and new events write the current shape).
     """
+
+    event_class: type[Event] = Event
 
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)
@@ -59,16 +68,20 @@ class Journal:
         if storage.exists(self.path):
             self._events = list(self._load())
 
+    def _decode(self, d: dict) -> Event:
+        """One stored dict -> one Event. The legacy-field seam."""
+        return self.event_class(
+            seq=int(d["seq"]), at=str(d["at"]), kind=str(d["kind"]),
+            subject=str(d.get("subject", "")), node=str(d.get("node", "")),
+            body=dict(d.get("body", {})))
+
     def _load(self) -> Iterator[Event]:
         want = 1
         for i, line in enumerate(storage.read_text(self.path).splitlines(), 1):
             if not line.strip():
                 continue
             try:
-                d = json.loads(line)
-                ev = Event(seq=int(d["seq"]), at=str(d["at"]), kind=str(d["kind"]),
-                           subject=str(d.get("subject", "")), node=str(d.get("node", "")),
-                           body=dict(d.get("body", {})))
+                ev = self._decode(json.loads(line))
             except (KeyError, TypeError, ValueError, json.JSONDecodeError) as e:
                 raise JournalError(f"line {i} is not a valid event: {e}") from e
             if ev.seq != want:
@@ -83,8 +96,8 @@ class Journal:
     def append(self, kind: str, at: datetime | str, subject: str = "",
                node: str = "", **body: Any) -> Event:
         ts = at.isoformat() if isinstance(at, datetime) else str(at)
-        ev = Event(seq=len(self._events) + 1, at=ts, kind=kind,
-                   subject=subject, node=node, body=body)
+        ev = self.event_class(seq=len(self._events) + 1, at=ts, kind=kind,
+                              subject=subject, node=node, body=body)
         storage.append_line(self.path, ev.dump())
         self._events.append(ev)
         return ev

@@ -120,12 +120,15 @@ class Judge:
     """Wraps one firing -> one verdict via the metered Anthropic API. Opt-in: use only
     when verdicts must land unattended; the primary path is the AI client (see module
     docstring). `client` is any object with the `messages.parse` surface — the real
-    `anthropic.Anthropic()` by default, a stub in tests. `system` and `prompt` inject
-    the domain's knowledge; the defaults only know the loop."""
+    `anthropic.Anthropic()` by default, a stub in tests. `system`, `prompt` and
+    `verdict_model` inject the domain's knowledge — a domain's verdict may carry its
+    own fields, and the schema the API enforces should be that domain's, not the
+    loop's. The defaults only know the loop."""
 
     def __init__(self, client: Any = None, model: str = MODEL,
                  system: str = DEFAULT_SYSTEM,
                  prompt: Callable[[Quern, Journal, Firing], str] = default_prompt,
+                 verdict_model: type[BaseModel] = Verdict,
                  ) -> None:
         if client is None:
             import anthropic  # lazy: the core never needs the SDK unless judging
@@ -134,9 +137,10 @@ class Judge:
         self._model = model
         self._system = system
         self._prompt = prompt
+        self._verdict_model = verdict_model
 
     def review(self, tree: Quern, journal: Journal, firing: Firing,
-               at: datetime) -> Verdict:
+               at: datetime) -> BaseModel:
         """Judge one firing, journal the verdict, return it. Raises JudgeError."""
         prompt = self._prompt(tree, journal, firing)
         try:
@@ -146,7 +150,7 @@ class Judge:
                 thinking={"type": "adaptive"},
                 system=self._system,
                 messages=[{"role": "user", "content": prompt}],
-                output_format=Verdict,
+                output_format=self._verdict_model,
             )
         except Exception as e:
             raise JudgeError(f"judgement call failed: {e}") from e

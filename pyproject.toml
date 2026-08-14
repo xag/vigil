@@ -1,6 +1,6 @@
 [project]
 name = "vigil"
-version = "0.1.0"
+version = "0.1.1"
 description = "The watch-and-judge loop: criteria as data, deterministic watching at a cadence, firings queued for judgment, verdicts that propose and never act."
 readme = "README.md"
 requires-python = ">=3.11"
