@@ -204,10 +204,11 @@ _COPY_DEBT = Node(
         # unchanged against them — the check the debt was waiting for.
         "copies": Quantity(
             value=1, unit="copy", provenance="measured", grounded=True,
-            source="invest@1.1.0 requires vigil@0.1.0 and the notebook's journal/"
-                   "daemon/scheduler/judge/feeds import vigil where their own loop "
-                   "code was; the notebook's 50-test suite passed unchanged against "
-                   "the adapters (2026-08-14)"),
+            source="the notebook's next package version requires vigil@0.1.0 and its "
+                   "journal/daemon/scheduler/judge/feeds import vigil where their own "
+                   "loop code was; its 50-test suite passed unchanged against the "
+                   "adapters (2026-08-14). Named generically on purpose: a library does "
+                   "not know its consumers, and this one ships public"),
     },
     payload={
         "note":
@@ -223,8 +224,8 @@ _COPY_DEBT = Node(
                  "condition":
                      "The notebook's next package version requires vigil@ and its "
                      "server imports this library where its own loop modules were. "
-                     "Whoever does that work grounds the count above at 1. Met: "
-                     "invest@1.1.0, 2026-08-14.",
+                     "Whoever does that work grounds the count above at 1. Met "
+                     "2026-08-14.",
              }),
     ],
 )
