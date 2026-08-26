@@ -40,13 +40,13 @@ _EXTRACTED = Node(
          "with the domain removed",
     payload={
         "rationale":
-            "The loop existed and worked: criteria as {claim, expr, cadence, feed} "
-            "payloads, a deterministic tick that fires on the false->true edge and "
-            "files gaps, a pending queue, verdicts that propose. Three kinds in the "
-            "notebook's own package share that anatomy and say so only in prose — a "
-            "true sentence that cannot fire. Extraction turns the shared anatomy into "
-            "a package a domain requires and a library a server imports; the domain "
-            "keeps its own kind names by precedence and migrates nothing it authored.",
+            "The loop existed and worked: criteria as {claim, expr, cadence, feed} payloads, a "
+            "deterministic tick that fires on the false->true edge and files gaps, a pending "
+            "queue, verdicts that propose. Three kinds in the notebook's own package share that "
+            "anatomy and say so only in prose — a sentence no rule can read. Extraction turns "
+            "the shared anatomy into a package a domain requires and a library a server "
+            "imports; the domain keeps its own kind names by precedence and migrates nothing it "
+            "authored.",
         "note":
             "Extraction is also the cheaper thing to be wrong about: digest pinning "
             "means no consumer's meaning moves until it repins, so a bad cut is a "
@@ -141,9 +141,9 @@ _NAMES = Node(
         Node(id="alt-clean-rename", kind="alternative",
              name="Rename the event kinds to fresh generic words at extraction",
              payload={"why":
-                      "Renaming buys nothing but a migration: the journal is "
-                      "append-only history, and history that must be rewritten to "
-                      "adopt a library is history the library destroyed."}),
+                      "Renaming buys nothing but a migration: the journal is append-only "
+                      "history, and a library that forces its adopters to rewrite their history "
+                      "has destroyed it."}),
     ],
 )
 
@@ -161,9 +161,9 @@ _ONE_LOOP = Node(
             "series-shaped assumption (the window's value type). What remains is a "
             "claim about watching, not about evidence.",
         "consequence_if_wrong":
-            "Bounded: a domain the shape cannot carry forks the loop, and the fork's "
-            "diff IS the missing concept, named. The cost of being wrong is one "
-            "honest fork, not a rewrite of adopters.",
+            "Bounded: a domain the shape cannot carry forks the loop, and the fork's diff shows "
+            "exactly which concept is missing. The cost of being wrong is one honest fork, not "
+            "a rewrite of adopters.",
         "evidence":
             "First adoption outside the notebook (2026-08-14): a surface critic "
             "ran the loop unchanged over rendered-prose windows from surface-tape "
@@ -212,11 +212,10 @@ _COPY_DEBT = Node(
     },
     payload={
         "note":
-            "The debt stood one day: extraction shipped with the source still "
-            "carrying its copy (deliberate — digest pinning makes migration explicit "
-            "and unhurried), and the source's next version removed it. Kept red-then-"
-            "green in the record rather than deleted, because the ledger's job is "
-            "what happened, not what reads well.",
+            "The debt stood one day: extraction shipped with the source still carrying its copy "
+            "(deliberate — digest pinning makes migration explicit and unhurried), and the "
+            "source's next version removed it. Kept red-then-green in the record rather than "
+            "deleted, because the ledger records what happened.",
     },
     children=[
         Node(id="the-notebook-requires-vigil", kind="discharge",
