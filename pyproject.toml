@@ -16,7 +16,7 @@ dependencies = [
 [tool.uv.sources]
 # Pinned by rev, always: fork-or-republish over resolver algebra. A range would let the
 # meaning of the loop drift under whoever adopted it.
-quern = { git = "https://github.com/xag/quern", rev = "93d6d01" }
+quern = { git = "https://github.com/xag/quern", rev = "a470e49" }
 xag-flight-recorder = { git = "https://github.com/xag/flight-recorder", rev = "7bc26d1" }
 
 [dependency-groups]
